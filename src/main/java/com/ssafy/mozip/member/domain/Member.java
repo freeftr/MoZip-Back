@@ -44,4 +44,27 @@ public class Member extends BaseTimeEntity {
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean deleted;
+
+    private Member(
+            String socialId,
+            String name,
+            String profileImag
+    ) {
+        this.socialId = socialId;
+        this.name = name;
+        this.profileImage = profileImag;
+        this.role = Role.USER;
+        this.status = Status.ACTIVE;
+    }
+
+    public static Member of(
+            String socialId,
+            String name,
+            String profileImageUrl
+    ) {
+        return new Member(
+                socialId,
+                name,
+                profileImageUrl);
+    }
 }
