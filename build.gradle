@@ -42,9 +42,6 @@ dependencies {
 
 	//OAuth2-Client
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-	//Spring-security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 tasks.named('test') {
