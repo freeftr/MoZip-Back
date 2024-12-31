@@ -48,7 +48,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
         String refreshToken = extractRefreshToken(request);
         String accessToken = extractAccessToken(request);
 
-        if(jwtUtil.isAccessTokeValid(accessToken)) {
+        if(jwtUtil.isAccessTokenValid(accessToken)) {
             return extractUser(accessToken);
         }
 
