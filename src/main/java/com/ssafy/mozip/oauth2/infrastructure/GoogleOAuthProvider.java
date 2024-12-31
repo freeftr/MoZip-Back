@@ -32,7 +32,7 @@ public class GoogleOAuthProvider implements OAuthProvider {
             RestTemplate restTemplate,
             @Value("${spring.security.oauth2.client.registration.google.client-id}") String clientId,
             @Value("${spring.security.oauth2.client.registration.google.client-secret}")String clientSecret,
-            @Value("${spring.security.oauth2.client.registration.google.redirect-url}")String redirectUri)
+            @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")String redirectUri)
     {
         this.restTemplate = restTemplate;
         this.clientId = clientId;
