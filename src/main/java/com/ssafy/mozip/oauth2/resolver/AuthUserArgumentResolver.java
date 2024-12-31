@@ -1,5 +1,6 @@
 package com.ssafy.mozip.oauth2.resolver;
 
+import com.ssafy.mozip.oauth2.annotation.AuthUser;
 import com.ssafy.mozip.common.exception.BadRequestException;
 import com.ssafy.mozip.common.exception.ExceptionCode;
 import com.ssafy.mozip.member.domain.Member;
@@ -20,14 +21,14 @@ import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
-public class AuthUser implements HandlerMethodArgumentResolver {
+public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(AuthUser.class);
+        return parameter.hasParameterAnnotation(com.ssafy.mozip.oauth2.annotation.AuthUser.class);
     }
 
     @Override
