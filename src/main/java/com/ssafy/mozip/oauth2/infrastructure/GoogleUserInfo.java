@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class GoogleUserInfo implements OAuthUserInfo {
     @JsonProperty("sub")
-    private String id;
+    private String socialId;
 
     @JsonProperty("email")
     private String email;
@@ -15,5 +15,5 @@ public class GoogleUserInfo implements OAuthUserInfo {
     private String name;
 
     @JsonProperty("picture")
-    private String picture;
+    private String profileImageUrl;
 }

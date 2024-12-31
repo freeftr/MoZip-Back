@@ -68,7 +68,7 @@ public class JwtUtil {
         }
     }
 
-    public boolean isAccessTokeValid(String accessToken) {
+    public boolean isAccessTokenValid(String accessToken) {
         try {
             parseToken(accessToken);
         } catch (JwtException e) {
