@@ -48,11 +48,11 @@ public class Member extends BaseTimeEntity {
     private Member(
             String socialId,
             String name,
-            String profileImag
+            String profileImage
     ) {
         this.socialId = socialId;
         this.name = name;
-        this.profileImage = profileImag;
+        this.profileImage = profileImage;
         this.role = Role.USER;
         this.status = Status.ACTIVE;
     }
