@@ -27,6 +27,7 @@ public class LoginController {
             @RequestBody GoogleLoginRequest googleLoginRequest,
             HttpServletResponse response
     ) {
+        log.info(googleLoginRequest.code());
         AuthTokens authTokens = loginService.googleLogin(googleLoginRequest);
 
         ResponseCookie cookie = ResponseCookie.from("refresh-token", authTokens.refreshToken())

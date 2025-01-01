@@ -39,9 +39,6 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = false, length = 1000)
-    private String refreshToken;
-
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean deleted;
 

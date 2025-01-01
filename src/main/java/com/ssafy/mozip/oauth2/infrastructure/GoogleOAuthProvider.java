@@ -74,12 +74,11 @@ public class GoogleOAuthProvider implements OAuthProvider {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         Map<String, Boolean> params = new HashMap<>();
-        params.put("secure_resource", true);
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<GoogleUserInfo> response = restTemplate.exchange(
-                USER_INFO_URI,
+                USER_INFO_URI + "?secure_resource=true",
                 HttpMethod.GET,
                 requestEntity,
                 GoogleUserInfo.class,
