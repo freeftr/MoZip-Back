@@ -12,8 +12,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -60,7 +58,7 @@ public class GoogleOAuthProvider implements OAuthProvider {
                 GoogleTokenResponse.class
         );
 
-        log.info("code : {}", code);
+        log.info("Received token for code : {}", code);
 
         return Optional.ofNullable(response.getBody())
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.UNABLE_TO_GET_ACCESS_TOKEN))
@@ -73,16 +71,13 @@ public class GoogleOAuthProvider implements OAuthProvider {
         headers.setBearerAuth(accessToken);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        Map<String, Boolean> params = new HashMap<>();
-
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<GoogleUserInfo> response = restTemplate.exchange(
-                USER_INFO_URI + "?secure_resource=true",
+                USER_INFO_URI,
                 HttpMethod.GET,
                 requestEntity,
-                GoogleUserInfo.class,
-                params
+                GoogleUserInfo.class
         );
 
         if(response.getStatusCode().is2xxSuccessful()) {

@@ -4,6 +4,7 @@ import com.ssafy.mozip.oauth2.application.LoginService;
 import com.ssafy.mozip.oauth2.domain.AuthTokens;
 import com.ssafy.mozip.oauth2.dto.request.GoogleLoginRequest;
 import com.ssafy.mozip.oauth2.dto.response.AccessTokenResponse;
+import com.ssafy.mozip.oauth2.infrastructure.GoogleOAuthProvider;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +23,11 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @PostMapping(value = "/login/google")
+    @PostMapping(value = "/google/callback")
     public ResponseEntity<AccessTokenResponse> googleLogin(
             @RequestBody GoogleLoginRequest googleLoginRequest,
             HttpServletResponse response
     ) {
-        log.info(googleLoginRequest.code());
         AuthTokens authTokens = loginService.googleLogin(googleLoginRequest);
 
         ResponseCookie cookie = ResponseCookie.from("refresh-token", authTokens.refreshToken())
@@ -37,8 +37,8 @@ public class LoginController {
                 .domain(".simplesns.com")
                 .path("/")
                 .build();
-
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
         return ResponseEntity.ok(new AccessTokenResponse(authTokens.accessToken()));
     }
 

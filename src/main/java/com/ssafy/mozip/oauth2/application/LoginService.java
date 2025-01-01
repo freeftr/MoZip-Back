@@ -58,13 +58,10 @@ public class LoginService {
             return accessToken;
         }
 
-        if(jwtUtil.isAccessTokenExpired(accessToken)) {
-            RefreshToken foundRefreshToken =
-                    refreshTokenRepository.findById(refreshToken)
-                            .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_REFRESH_TOKEN));
-            return jwtUtil.reissueAccessToken(foundRefreshToken.getUserId().toString());
-        }
-        throw new BadRequestException(ExceptionCode.FAILED_TO_VALIDATE_TOKEN);
+        RefreshToken foundRefreshToken =
+                refreshTokenRepository.findById(refreshToken)
+                        .orElseThrow(() -> new BadRequestException(ExceptionCode.INVALID_REFRESH_TOKEN));
+        return jwtUtil.reissueAccessToken(foundRefreshToken.getUserId().toString());
     }
 
     private Member findOrCreateMember(String socialId, String name, String profileImageUrl) {
