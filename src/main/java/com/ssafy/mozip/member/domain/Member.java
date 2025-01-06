@@ -27,7 +27,7 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false, length = 25)
     private String name;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = true, length = 10)
     private String password;
 
     @Column(nullable = false, length = 100)
@@ -45,11 +45,13 @@ public class Member extends BaseTimeEntity {
     private Member(
             String socialId,
             String name,
-            String profileImage
+            String profileImage,
+            String email
     ) {
         this.socialId = socialId;
         this.name = name;
         this.profileImage = profileImage;
+        this.email = email;
         this.role = Role.USER;
         this.status = Status.ACTIVE;
     }
@@ -57,11 +59,13 @@ public class Member extends BaseTimeEntity {
     public static Member of(
             String socialId,
             String name,
-            String profileImageUrl
+            String profileImageUrl,
+            String email
     ) {
         return new Member(
                 socialId,
                 name,
-                profileImageUrl);
+                profileImageUrl,
+                email);
     }
 }

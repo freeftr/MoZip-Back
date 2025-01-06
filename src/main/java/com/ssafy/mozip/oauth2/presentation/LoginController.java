@@ -29,7 +29,6 @@ public class LoginController {
     ) {
         AuthTokens authTokens = loginService.googleLogin(googleLoginRequest);
 
-        log.info("code: {}", googleLoginRequest.code());
         ResponseCookie cookie = ResponseCookie.from("refresh-token", authTokens.refreshToken())
                 .maxAge(ONE_WEEK_SECONDS)
                 .httpOnly(true)

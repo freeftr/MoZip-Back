@@ -31,7 +31,8 @@ public class LoginService {
         Member member = findOrCreateMember(
                 userInfo.getSocialId(),
                 userInfo.getName(),
-                userInfo.getProfileImageUrl()
+                userInfo.getProfileImageUrl(),
+                userInfo.getEmail()
         );
 
         AuthTokens authTokens = jwtUtil.createAuthToken(member.getId().toString());
@@ -40,7 +41,6 @@ public class LoginService {
 
         return authTokens;
     }
-
 
     public void logout(String refreshToken) {
         refreshTokenRepository.deleteById(refreshToken);
@@ -65,13 +65,13 @@ public class LoginService {
         return jwtUtil.reissueAccessToken(foundRefreshToken.getUserId().toString());
     }
 
-    private Member findOrCreateMember(String socialId, String name, String profileImageUrl) {
+    private Member findOrCreateMember(String socialId, String name, String profileImageUrl, String email) {
         return memberRepository.findBySocialId(socialId)
-                .orElseGet(() -> createMember(socialId, name, profileImageUrl));
+                .orElseGet(() -> createMember(socialId, name, profileImageUrl, email));
     }
 
-    private Member createMember(String socialId, String name, String profileImageUrl) {
+    private Member createMember(String socialId, String name, String profileImageUrl, String email) {
         log.info("Created new user: {}", name);
-        return memberRepository.save(Member.of(socialId, name, profileImageUrl));
+        return memberRepository.save(Member.of(socialId, name, profileImageUrl, email));
     }
 }
