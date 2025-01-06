@@ -1,6 +1,5 @@
 package com.ssafy.mozip.oauth2.resolver;
 
-import com.ssafy.mozip.oauth2.annotation.AuthUser;
 import com.ssafy.mozip.common.exception.BadRequestException;
 import com.ssafy.mozip.common.exception.ExceptionCode;
 import com.ssafy.mozip.member.domain.Member;

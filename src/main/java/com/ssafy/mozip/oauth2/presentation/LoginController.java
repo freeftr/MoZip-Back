@@ -4,7 +4,6 @@ import com.ssafy.mozip.oauth2.application.LoginService;
 import com.ssafy.mozip.oauth2.domain.AuthTokens;
 import com.ssafy.mozip.oauth2.dto.request.GoogleLoginRequest;
 import com.ssafy.mozip.oauth2.dto.response.AccessTokenResponse;
-import com.ssafy.mozip.oauth2.infrastructure.GoogleOAuthProvider;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +22,14 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @PostMapping(value = "/google/callback")
+    @PostMapping("/login/google")
     public ResponseEntity<AccessTokenResponse> googleLogin(
             @RequestBody GoogleLoginRequest googleLoginRequest,
             HttpServletResponse response
     ) {
         AuthTokens authTokens = loginService.googleLogin(googleLoginRequest);
 
+        log.info("code: {}", googleLoginRequest.code());
         ResponseCookie cookie = ResponseCookie.from("refresh-token", authTokens.refreshToken())
                 .maxAge(ONE_WEEK_SECONDS)
                 .httpOnly(true)

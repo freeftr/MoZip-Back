@@ -41,6 +41,7 @@ public class LoginService {
         return authTokens;
     }
 
+
     public void logout(String refreshToken) {
         refreshTokenRepository.deleteById(refreshToken);
     }
