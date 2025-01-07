@@ -35,10 +35,10 @@ public class GroupService {
         Group group = Group.of(name, leader.getId());
         groupRepository.save(group);
 
-        for (String email : emails) {
-            Member member = memberRepository.findByEmail(email)
-                    .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
+        List<Member> members = memberRepository.findByEmailIn(emails)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
 
+        for (Member member : members) {
             Participant participant = Participant.of(member, group);
             participantRepository.save(participant);
         }
