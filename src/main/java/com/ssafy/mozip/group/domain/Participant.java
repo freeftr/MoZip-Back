@@ -21,4 +21,20 @@ public class Participant {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
+    private Participant(
+            Member member,
+            Group group
+    ) {
+        this.member = member;
+        this.group = group;
+    }
+
+    public static Participant of(
+            Member member,
+            Group group
+    ) {
+        return new Participant(
+                member,
+                group);
+    }
 }

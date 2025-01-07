@@ -21,5 +21,20 @@ public class Group extends BaseTimeEntity {
     @Column(nullable = false)
     private Long leaderId;
 
+    private Group(
+            String name,
+            Long leaderId
+    ) {
+        this.name = name;
+        this.leaderId = leaderId;
+    }
 
+    public static Group of(
+            String name,
+            Long leaderId
+    ) {
+        return new Group(
+                name,
+                leaderId);
+    }
 }
