@@ -38,6 +38,7 @@ public class GroupController {
             @RequestBody AddParticipantsRequest addParticipantsRequest
     ){
 
+        log.info("s");
         Long groupId = addParticipantsRequest.groupId();
         List<String> emails = addParticipantsRequest.emails();
 

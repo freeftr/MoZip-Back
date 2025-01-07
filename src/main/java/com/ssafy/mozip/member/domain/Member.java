@@ -1,10 +1,14 @@
 package com.ssafy.mozip.member.domain;
 
 import com.ssafy.mozip.common.domain.BaseTimeEntity;
+import com.ssafy.mozip.group.domain.Participant;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,6 +45,9 @@ public class Member extends BaseTimeEntity {
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean deleted;
+
+    @OneToMany (mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Participant> participants = new ArrayList<>();
 
     private Member(
             String socialId,

@@ -12,13 +12,16 @@ import lombok.NoArgsConstructor;
 public class Participant {
 
     @Id
+    @Column(name = "participant_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
     private Participant(
