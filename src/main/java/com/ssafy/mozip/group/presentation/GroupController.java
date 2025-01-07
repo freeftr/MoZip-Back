@@ -1,15 +1,13 @@
 package com.ssafy.mozip.group.presentation;
 
 import com.ssafy.mozip.group.application.GroupService;
+import com.ssafy.mozip.group.dto.AddParticipantsRequest;
 import com.ssafy.mozip.group.dto.GroupCreateRequest;
 import com.ssafy.mozip.member.domain.Member;
 import com.ssafy.mozip.oauth2.annotation.AuthUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class GroupController {
 
     private final GroupService groupService;
 
-    @GetMapping("/create")
+    @PostMapping
     public void createGroup(
             @RequestBody GroupCreateRequest groupCreateRequest,
             @AuthUser Member member
@@ -33,5 +31,16 @@ public class GroupController {
         Long leaderId = member.getId();
 
         groupService.createGroup(name, leaderId, emails);
+    }
+
+    @PostMapping("/add")
+    public void addParticipants(
+            @RequestBody AddParticipantsRequest addParticipantsRequest
+    ){
+
+        Long groupId = addParticipantsRequest.groupId();
+        List<String> emails = addParticipantsRequest.emails();
+
+        groupService.addParticipants(groupId, emails);
     }
 }

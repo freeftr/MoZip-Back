@@ -44,7 +44,21 @@ public class GroupService {
         }
     }
 
-    public void addParticipant(Long groupId, Long participantId) {
+    @Transactional
+    public void addParticipants(
+            Long groupId,
+            List<String> emails
+    ) {
 
+        List<Member> members = memberRepository.findByEmailIn(emails)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_GROUP));
+
+        for (Member member : members) {
+            Participant participant = Participant.of(member, group);
+            participantRepository.save(participant);
+        }
     }
 }
