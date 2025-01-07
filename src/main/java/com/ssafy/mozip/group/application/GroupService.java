@@ -43,4 +43,8 @@ public class GroupService {
             participantRepository.save(participant);
         }
     }
+
+    public void addParticipant(Long groupId, Long participantId) {
+
+    }
 }
