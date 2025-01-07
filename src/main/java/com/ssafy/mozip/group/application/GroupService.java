@@ -10,6 +10,7 @@ import com.ssafy.mozip.member.domain.Member;
 import com.ssafy.mozip.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,7 +22,12 @@ public class GroupService {
     private final ParticipantRepository participantRepository;
     private final MemberRepository memberRepository;
 
-    public void createGroup(String name, Long leaderId, List<String> emails){
+    @Transactional
+    public void createGroup(
+            String name,
+            Long leaderId,
+            List<String> emails
+    ){
 
         Member leader = memberRepository.findById(leaderId)
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));

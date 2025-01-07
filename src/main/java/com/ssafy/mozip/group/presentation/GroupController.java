@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/group")
+@RequestMapping("/groups")
 @RequiredArgsConstructor
 @Slf4j
 public class GroupController {
@@ -23,7 +23,8 @@ public class GroupController {
     @GetMapping("/create")
     public void createGroup(
             GroupCreateRequest groupCreateRequest,
-            @AuthUser Member member) {
+            @AuthUser Member member
+    ) {
 
         String name = groupCreateRequest.name();
         List<String> emails = groupCreateRequest.emails();
