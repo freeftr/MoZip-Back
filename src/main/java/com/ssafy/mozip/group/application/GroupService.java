@@ -6,16 +6,18 @@ import com.ssafy.mozip.group.domain.Group;
 import com.ssafy.mozip.group.domain.Participant;
 import com.ssafy.mozip.group.domain.repository.GroupRepository;
 import com.ssafy.mozip.group.domain.repository.ParticipantRepository;
+import com.ssafy.mozip.group.dto.request.AddParticipantsRequest;
+import com.ssafy.mozip.group.dto.request.GroupCreateRequest;
+import com.ssafy.mozip.group.dto.request.GroupUpdateRequest;
 import com.ssafy.mozip.group.dto.response.GroupDetailResponse;
-import com.ssafy.mozip.group.dto.response.GroupListResponse;
 import com.ssafy.mozip.member.domain.Member;
 import com.ssafy.mozip.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,24 +29,27 @@ public class GroupService {
 
     @Transactional
     public void createGroup(
-            String name,
-            Long leaderId,
-            List<String> emails
+            GroupCreateRequest groupCreateRequest,
+            Member leader
     ){
 
-        Member leader = memberRepository.findById(leaderId)
-                .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
 
-        Group group = Group.of(name, leader.getId());
+        Group group = Group.of(
+                groupCreateRequest.name(),
+                leader.getId());
+
         groupRepository.save(group);
 
-        List<Member> members = memberRepository.findByEmailIn(emails)
+        List<Member> members = memberRepository.findByEmailIn(groupCreateRequest.emails())
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
 
         for (Member member : members) {
             Participant participant = Participant.of(member, group);
             participantRepository.save(participant);
         }
+
+        Participant leaderParticipant = Participant.of(leader, group);
+        participantRepository.save(leaderParticipant);
     }
 
     public GroupDetailResponse readGroup (Long groupId) {
@@ -57,36 +62,25 @@ public class GroupService {
         return new GroupDetailResponse(group.getName(), leader.getName());
     }
 
-    public GroupListResponse readGroups(Long memberId) {
+    @Transactional(readOnly = true)
+    public HashMap<String, String> readGroups(Member member) {
 
-        Member member = memberRepository.findById(memberId)
-                        .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
+        HashMap<String, String> groupInfos = groupRepository.findAllGroupsByMemberId(member.getId());
 
-        List<Group> groups = participantRepository.findGroupsByParticipantId(memberId);
-
-        List<GroupListResponse.GroupResponse> groupResponses = groups.stream()
-                .map(group -> new GroupListResponse.GroupResponse(
-                        group.getName(),
-                        memberRepository.findById(group.getLeaderId())
-                                .map(Member::getName)
-                                .orElse("Unknown Leader")
-                ))
-                .collect(Collectors.toList());
-
-        return new GroupListResponse(groupResponses);
+        return groupInfos;
     }
 
     public void updateGroup (
             Long groupId,
-            Long memberId,
-            String newName
+            Member member,
+            GroupUpdateRequest groupUpdateRequest
     ) {
 
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_GROUP));
 
-        if (group.isLeader(memberId)) {
-            group.updateName(newName);
+        if (group.isLeader(member.getId())) {
+            group.updateName(groupUpdateRequest.newName());
             groupRepository.save(group);
         } else {
             throw new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER);
@@ -96,19 +90,19 @@ public class GroupService {
     public void deleteGroup(Long groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_GROUP));
+
         groupRepository.delete(group);
     }
 
     @Transactional
     public void addParticipants(
-            Long groupId,
-            List<String> emails
+            AddParticipantsRequest addParticipantsRequest
     ) {
 
-        List<Member> members = memberRepository.findByEmailIn(emails)
+        List<Member> members = memberRepository.findByEmailIn(addParticipantsRequest.emails())
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
 
-        Group group = groupRepository.findById(groupId)
+        Group group = groupRepository.findById(addParticipantsRequest.groupId())
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_GROUP));
 
         for (Member member : members) {

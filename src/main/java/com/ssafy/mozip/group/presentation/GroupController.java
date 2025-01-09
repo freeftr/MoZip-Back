@@ -5,7 +5,6 @@ import com.ssafy.mozip.group.dto.request.AddParticipantsRequest;
 import com.ssafy.mozip.group.dto.request.GroupCreateRequest;
 import com.ssafy.mozip.group.dto.request.GroupUpdateRequest;
 import com.ssafy.mozip.group.dto.response.GroupDetailResponse;
-import com.ssafy.mozip.group.dto.response.GroupListResponse;
 import com.ssafy.mozip.member.domain.Member;
 import com.ssafy.mozip.oauth2.annotation.AuthUser;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -34,12 +34,12 @@ public class GroupController {
 
         Long leaderId = member.getId();
 
-        groupService.createGroup(name, leaderId, emails);
+        groupService.createGroup(groupCreateRequest, member);
 
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/detail/{groupId}")
+    @GetMapping("/{groupId}")
     public ResponseEntity<GroupDetailResponse> readGroup(
             @PathVariable Long groupId,
             @AuthUser Member member
@@ -52,14 +52,14 @@ public class GroupController {
     }
 
     @GetMapping
-    public ResponseEntity<GroupListResponse> readGroups(
+    public ResponseEntity<HashMap<String, String>> readGroups(
             @AuthUser Member member
     ) {
-        Long memberId = member.getId();
-        GroupListResponse groupListResponse = groupService.readGroups(memberId);
+
+        HashMap<String, String> groupInfos = groupService.readGroups(member);
 
         return ResponseEntity.ok()
-                .body(groupListResponse);
+                .body(groupInfos);
     }
 
     @PatchMapping("/{groupId}")
@@ -69,25 +69,7 @@ public class GroupController {
             @AuthUser Member member
     ) {
 
-        Long memberId = member.getId();
-
-        String newName = groupUpdateRequest.newName();
-
-        groupService.updateGroup(groupId, memberId, newName);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<Void> addParticipants(
-            @RequestBody AddParticipantsRequest addParticipantsRequest,
-            @AuthUser Member member
-    ){
-
-        Long groupId = addParticipantsRequest.groupId();
-        List<String> emails = addParticipantsRequest.emails();
-
-        groupService.addParticipants(groupId, emails);
+        groupService.updateGroup(groupId, member, groupUpdateRequest);
 
         return ResponseEntity.ok().build();
     }
@@ -102,4 +84,16 @@ public class GroupController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<Void> addParticipants(
+            @RequestBody AddParticipantsRequest addParticipantsRequest,
+            @AuthUser Member member
+    ){
+
+        groupService.addParticipants(addParticipantsRequest);
+
+        return ResponseEntity.ok().build();
+    }
+
 }
