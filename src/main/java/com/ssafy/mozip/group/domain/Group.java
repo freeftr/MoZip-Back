@@ -29,6 +29,10 @@ public class Group extends BaseTimeEntity {
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<Participant> participants = new ArrayList<>();
 
+    public boolean isLeader(Long memberId) {
+        return this.leaderId.equals(memberId);
+    }
+
     private Group(
             String name,
             Long leaderId
@@ -46,7 +50,7 @@ public class Group extends BaseTimeEntity {
                 leaderId);
     }
 
-    public void setName (String name) {
+    public void updateName (String name) {
         this.name = name;
     }
 }

@@ -85,10 +85,8 @@ public class GroupService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_GROUP));
 
-        Long leaderId = group.getLeaderId();
-
-        if (leaderId.equals(memberId)) {
-            group.setName(newName);
+        if (group.isLeader(memberId)) {
+            group.updateName(newName);
             groupRepository.save(group);
         } else {
             throw new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER);
