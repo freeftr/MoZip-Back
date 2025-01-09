@@ -61,4 +61,10 @@ public class GroupService {
             participantRepository.save(participant);
         }
     }
+
+    public void deleteGroup(Long groupId) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_GROUP));
+        groupRepository.delete(group);
+    }
 }
