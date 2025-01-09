@@ -45,4 +45,8 @@ public class Group extends BaseTimeEntity {
                 name,
                 leaderId);
     }
+
+    public void setName (String name) {
+        this.name = name;
+    }
 }

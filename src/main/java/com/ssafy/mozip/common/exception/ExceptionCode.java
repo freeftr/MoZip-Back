@@ -19,7 +19,8 @@ public enum ExceptionCode {
     INVALID_ACCESS_TOKEN(3003, "유효하지 않은 Access Token입니다."),
 
     NOT_FOUND_MEMBER(4000,"해당 유저는 존재하지 않는 유저입니다."),
-    NOT_FOUND_GROUP(4001, "존재하지 않는 모임입니다.");
+    NOT_FOUND_GROUP(4001, "존재하지 않는 모임입니다."),
+    UNAUTHORIZED_OPERATION(4002, "모임장만 수정할 수 있습니다.");
 
     private final int code;
     private final String message;

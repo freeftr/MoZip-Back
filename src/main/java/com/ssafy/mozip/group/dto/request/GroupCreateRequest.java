@@ -1,4 +1,4 @@
-package com.ssafy.mozip.group.dto;
+package com.ssafy.mozip.group.dto.request;
 
 import java.util.List;
 
