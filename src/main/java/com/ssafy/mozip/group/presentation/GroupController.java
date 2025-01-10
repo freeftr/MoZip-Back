@@ -29,11 +29,6 @@ public class GroupController {
             @AuthUser Member member
     ) {
 
-        String name = groupCreateRequest.name();
-        List<String> emails = groupCreateRequest.emails();
-
-        Long leaderId = member.getId();
-
         groupService.createGroup(groupCreateRequest, member);
 
         return ResponseEntity.ok().build();
