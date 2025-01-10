@@ -57,10 +57,6 @@ dependencies {
 	// Spring Rest Docs for API Documentation
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-
-	// JUnit 5 (Jupiter) Dependencies
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 test {

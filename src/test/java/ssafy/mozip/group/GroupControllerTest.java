@@ -1,4 +1,4 @@
-package ssafy.mozip.common.group;
+package ssafy.mozip.group;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.mozip.group.application.GroupService;
