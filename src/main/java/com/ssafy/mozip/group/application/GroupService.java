@@ -28,17 +28,17 @@ public class GroupService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void createGroup(
+    public Long createGroup(
             GroupCreateRequest groupCreateRequest,
             Member leader
     ){
-
 
         Group group = Group.of(
                 groupCreateRequest.name(),
                 leader.getId());
 
-        groupRepository.save(group);
+        Long groupId = groupRepository.save(group).getId();
+
 
         List<Member> members = memberRepository.findByEmailIn(groupCreateRequest.emails())
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
@@ -50,6 +50,8 @@ public class GroupService {
 
         Participant leaderParticipant = Participant.of(leader, group);
         participantRepository.save(leaderParticipant);
+
+        return groupId;
     }
 
     public GroupDetailResponse readGroup (Long groupId) {
