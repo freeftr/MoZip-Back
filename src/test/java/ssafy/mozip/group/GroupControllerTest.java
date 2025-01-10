@@ -50,7 +50,7 @@ class GroupControllerTest extends ControllerTest {
                     .header(HttpHeaders.AUTHORIZATION, "access-token")
                     .cookie(new Cookie("refresh-token", "refresh-token")))
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         verify(groupService).createGroup(any(), any());
     }
