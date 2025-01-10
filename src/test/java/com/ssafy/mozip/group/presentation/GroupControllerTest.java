@@ -1,9 +1,8 @@
-package ssafy.mozip.group;
+package com.ssafy.mozip.group.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.mozip.group.application.GroupService;
 import com.ssafy.mozip.group.dto.request.GroupCreateRequest;
-import com.ssafy.mozip.group.presentation.GroupController;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,10 +44,10 @@ class GroupControllerTest extends ControllerTest {
                 .willReturn(groupId);
 
         mockMvc.perform(post("/groups")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request))
-                    .header(HttpHeaders.AUTHORIZATION, "access-token")
-                    .cookie(new Cookie("refresh-token", "refresh-token")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .header(HttpHeaders.AUTHORIZATION, "access-token")
+                        .cookie(new Cookie("refresh-token", "refresh-token")))
                 .andDo(print())
                 .andExpect(status().isOk());
 
