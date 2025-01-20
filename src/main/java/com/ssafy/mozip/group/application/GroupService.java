@@ -54,6 +54,7 @@ public class GroupService {
         return groupId;
     }
 
+    @Transactional
     public GroupDetailResponse readGroup (Long groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_GROUP));
@@ -61,7 +62,11 @@ public class GroupService {
         Member leader = memberRepository.findById(group.getLeaderId())
                 .orElseThrow(() -> new BadRequestException(ExceptionCode.NOT_FOUND_MEMBER));
 
-        return new GroupDetailResponse(group.getName(), leader.getName());
+        List<Long> participants = participantRepository.findByGroupId(groupId);
+
+        List<Member> members = memberRepository.findAllById(participants);
+
+        return new GroupDetailResponse(group.getName(), leader.getName(), members);
     }
 
     @Transactional(readOnly = true)

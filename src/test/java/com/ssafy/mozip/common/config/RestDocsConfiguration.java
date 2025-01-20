@@ -1,4 +1,4 @@
-package ssafy.mozip.common.config;
+package com.ssafy.mozip.common.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

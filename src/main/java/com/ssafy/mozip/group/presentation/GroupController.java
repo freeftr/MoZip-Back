@@ -36,7 +36,7 @@ public class GroupController {
 
     @GetMapping("/{groupId}")
     public ResponseEntity<GroupDetailResponse> readGroup(
-            @PathVariable Long groupId,
+            @PathVariable("groupId") Long groupId,
             @AuthUser Member member
     ) {
 
@@ -59,7 +59,7 @@ public class GroupController {
 
     @PatchMapping("/{groupId}")
     public ResponseEntity<Void> updateGroup(
-            @PathVariable Long groupId,
+            @PathVariable("groupId") Long groupId,
             @RequestBody GroupUpdateRequest groupUpdateRequest,
             @AuthUser Member member
     ) {
@@ -69,13 +69,13 @@ public class GroupController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> deleteGroup(
-            @PathVariable Long id,
+            @PathVariable("groupId") Long groupId,
             @AuthUser Member member
     ) {
 
-        groupService.deleteGroup(id);
+        groupService.deleteGroup(groupId);
 
         return ResponseEntity.ok().build();
     }
