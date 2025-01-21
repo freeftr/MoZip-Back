@@ -24,6 +24,26 @@ public class FriendRequest extends BaseTimeEntity {
     private Member receiver;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private FriendRequestStatus friendRequestStatus;
 
+    private FriendRequest(
+            Member sender,
+            Member receiver,
+            FriendRequestStatus friendRequestStatus
+    ) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.friendRequestStatus = friendRequestStatus;
+    }
+
+    public static FriendRequest of(
+            Member sender,
+            Member receiver,
+            FriendRequestStatus friendRequestStatus) {
+        return new FriendRequest(
+                sender,
+                receiver,
+                friendRequestStatus
+        );
+    }
 }
