@@ -1,7 +1,6 @@
-package com.ssafy.mozip.friend.dto;
+package com.ssafy.mozip.friend.dto.request;
 
 public record FriendRequestRequest(
-        Long senderId,
         String email
 ) {
 }

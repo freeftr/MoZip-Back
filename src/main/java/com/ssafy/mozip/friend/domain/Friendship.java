@@ -22,4 +22,20 @@ public class Friendship extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member friend2;
+
+    private Friendship(
+            Member friend1, Member friend2
+    ) {
+        this.friend1 = friend1;
+        this.friend2 = friend2;
+    }
+
+    public static Friendship of(
+            Member friend1,
+            Member friend2
+    ) {
+        return new Friendship(
+                friend1,
+                friend2);
+    }
 }
